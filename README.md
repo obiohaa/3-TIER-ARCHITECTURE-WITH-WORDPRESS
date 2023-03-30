@@ -130,7 +130,7 @@ We will be using RedHat OS and not the popular ubuntu. Here, 2 ECS instances wil
 
 25. To confirm what we have done we run the lsblk command to show the logical volumes and its mount point and type
 
-![updated lsblk](./images/lsblk1.png)
+![updated_lsblk1](./images/lsblk1.PNG)
 
 
 **B --SETTING UP THE WEB AND DB SERVER FOR WORDPRESS**
