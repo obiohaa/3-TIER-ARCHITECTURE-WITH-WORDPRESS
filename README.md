@@ -14,7 +14,7 @@ We will be using RedHat OS and not the popular ubuntu. Here, 2 ECS instances wil
 
     `Sudo lsblk --  show the list of storage block`
 
-![lsblk](./images/lsblk2.PNG)
+![lsblk2](./images/lsblk2.png)
 
 4. After attaching the volumes to the instances, we need to look into the logical volume management (LVM)
 
@@ -42,7 +42,7 @@ We will be using RedHat OS and not the popular ubuntu. Here, 2 ECS instances wil
 
 10. After running the partition on the attached volumes, we use lsblk to check the block devices and partitions.
 
-![lsblk1](./images/lsblk2.PNG)
+![lsblk2](./images/lsblk2.PNG)
 
 11. Next we install Logical Volume Management (LVM) by running the below
 
