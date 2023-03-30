@@ -2,7 +2,7 @@
 
 In this project we will be creating an infrastructure of an Apache web server, a mysql DB and an access point or browser.
 
-We will be using RedHat OS and not the popular ubuntu. Here, 2 ECS instances will be created and 3 storage volumes. We will attach 3 volumes to each of the EC2 instances.
+We will be using RedHat OS and not the popular ubuntu. Here, 2 ECS instances will be created and 3 storage volumes. We will attach 3 volumes to each of the EC2 instances and use the logical volume manager.
 
  **A --SETTING UP THE ATTACHED STORAGE WITH LVM**
 
