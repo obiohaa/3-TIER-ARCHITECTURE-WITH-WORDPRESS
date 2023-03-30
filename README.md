@@ -42,7 +42,7 @@ We will be using RedHat OS and not the popular ubuntu. Here, 2 ECS instances wil
 
 10. After running the partition on the attached volumes, we use lsblk to check the block devices and partitions.
 
-![lsblk2](./images/lsblk2.PNG)
+![lsblk2](./images/lsblk2.png)
 
 11. Next we install Logical Volume Management (LVM) by running the below
 
