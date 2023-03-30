@@ -1,0 +1,143 @@
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'SetRootPasswordHere';
+exit
+
+
+
+
+CUSTOMER FEEDBACK DO NOT UPDATE
+
+
+/* Remove metadata  */
+
+.entry-meta .byline, .entry-meta .cat-links { display: none; }
+.entry-meta .posted-on { display: none; }
+
+
+daily eatry varience
+
+======================================================
+
+--we want to first create a partition on the physical disk
+--then we switch to logical volume management
+--with the LVM tool we create a physical volume, volume group, then a logical volume.
+
+
+
+sudo ls /dev ---- list out all the storage devices.
+sudo gdisk /dev/xvdf ----- to create partition (m for more details)
+enter n ---- for new partition
+click enter to carry on the default configuration or enter values based on what partition number and first/last sector you want.
+we change the file type to Logical volume management by inputing 8e00.
+enter commapnd p  --- to see the partitions one have in a storage
+enter command  w to write into existing partition
+
+
+lsblk --- to inspect the block deviced/partitions in the physical machine.
+
+=============
+
+7)    we cannot create physical volume directly on the physical disk .i.e xvdf or xvdg or xvdh but in the partitions.
+
+pvcreate /dev/xvdf1 /dev/xvdg1 /dev/xvdh1 ----  creates physical volume on the 3 partitions
+
+sudo pvs --- shows the physical volumes we have
+
+NEXT
+
+sudo vgcreate "name of volume group" /dev/xvdf1 /dev/xvdg1 /dev/xvdh1
+
+sudo vgs  ---  shows the volume group combined into one
+
+NEXT WE CREATE A LOGICAL VOLUME FOR OUR SERVER
+
+sudo lvcreate -n "name of LV" -L 14G "NAMAE OF VOLUME GROUP"
+sudo lvcreate -n "name of LV" -L 14G "NAMAE OF VOLUME GROUP"
+
+sudo lvs   ---  shows the logical volume created.
+
+
+NEXT WE FORMAT THE LOGICAL VOLUME WITH ext4 file system.
+
+The mkfs command is used to make a file system on a device, usually a partition on a hard disk drive (HDD), or it can also be a USB drive, etc. Specifies the type of file system to be built. If not specified, the default file system type (currently ext2) is used.
+
+sudo mkfs -t ext4 /dev/webdata-vg/apps-lv (sudo mkfs -t ext4 /dev/'volume group'/'logical volume'
+sudo mkfs -t ext4 /dev/webdata-vg/logs-lv
+
+NEXT 
+
+After creating the directories we mount the Logical volume on it.
+
+sudo mkdir -p /var/www/html
+sudo mkdir -p /var/www/html
+
+MOUNT
+when you mount, please confirm if there is an item on the child directory. on mounting, if there is an item init, the item gets deleted.
+
+
+rsync (remote sync) is the most commonly used command for copying and synchronizing files and directories remotely as well as locally.
+
+//rsync options source destination
+
+options can be
+-v : verbose
+-r : copies data recursively (but don’t preserve timestamps and permission while transferring data.
+-a : archive mode, which allows copying files recursively and it also preserves symbolic links, file permissions, user & group ownerships, and timestamps.
+-z : compress file data.
+-h : human-readable, output numbers in a human-readable format.
+
+==========================================
+after mounting the logical volumes, if we restart the system or instance it will get deleted. To make our configuration persist even after reboot we add the block Id... to the fstab config file
+
+sudo blkid --- check the block id of the mounted storages or logical volumes.
+
+
+================
+UUID=547bfff5-8154-48ea-be69-57a827e243d9 /var/log ext4 default 0 0
+UUID=7cde4f3a-5f51-4336-95e3-a4bf5b7456ef /var/www/html ext4 default 0 0
+===============
+/dev/mapper/webdata--vg-apps--lv: UUID="330a8a3f-14c9-4e77-97d7-ec0adc125485" BLOCK_SIZE="4096" TYPE="ext4"
+/dev/mapper/webdata--vg-logs--lv: UUID="c038c994-9bcd-4f31-9e47-cd81b70c99af" BLOCK_SIZE="4096" TYPE="ext4"
+===============
+/dev/mapper/webdata--vg-db--lv: UUID="5ee7d448-cebb-4b40-9a7e-97ffa7adba62" BLOCK_SIZE="4096" TYPE="ext4"
+=================
+
+vi /etc/fstab  ---- to add our mounted logical volumes as shown above
+
+then to test everything worked well we run the below code
+
+sudo mount -a ----- to confirm the mount process went okay
+
+---if it does not return an erro then its okay---
+
+NEXT, we reload the deamon
+
+sudo sytemctl daemon-reload   ---   reload foreground/background services. 
+
+============================
+lsblk  ---  lists information about all available or the specified block devices. The lsblk command reads the sysfs filesystem and udev db to gather information.
+
+========================
+-R   ----- is the recursive flag ----   
+The command above creates the destination directory and recursively copy all files and subdirectories from the source to the destination directory. If the destination directory already exists, the source directory itself and its content are copied inside the destination directory
+
+=====================
+
+CREATE USER `myuser`@`172.31.60.26` IDENTIFIED BY 'mypass';
+
+====================
+set the bind address...
+---
+sudo vi /etc/my.cnf   ---- contains configuration files for our database.
+sudo systemctl restart mysqld   --- restart the service
+
+sudo vi wp-config.php
+
+==============================
+
+--disable the default page of apache
+sudo mv /etc/httpd/conf.d/welcome.conf /etc/httpd/conf.d/welcome.conf_backup
+
+
+============
+K7nrubwqS5P1nm1Q7n
+==============
